@@ -10,10 +10,10 @@
 name: Build and deploy a container to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: devops   # set this to your application's name
+  AZURE_WEBAPP_NAME: app-devops   # set this to your application's name
   TAG: 1.0 # Le numéro du tag
   AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }} # Définir le chemin d'accès à la web app.
-  JAVA_VERSION: 17 # Définir la verison de Java
+  JAVA_VERSION: 17 # Définir la version de Java
 on:
   push:
     branches:
@@ -45,13 +45,13 @@ jobs:
         run: mvn install
 
       - name: Build Docker Image
-        run: docker build -t denissanchez/${{ env.AZURE_WEBAPP_NAME }} .
+        run: docker build -t valprt/${{ env.AZURE_WEBAPP_NAME }} .
 
       - name: Log in to Docker Hub
         run : echo ${{ secrets.DOCKER_HUB_TOKEN}} | docker login -u ${{secrets.DOCKER_HUB_USERNAME}} --password-stdin
 
       - name: Push Docker image
-        run : docker push denissanchez/${{ env.AZURE_WEBAPP_NAME }}
+        run : docker push valprt/${{ env.AZURE_WEBAPP_NAME }}
 
       - name: 'Deploy to Azure WebApp'
         uses: azure/webapps-deploy@v2
